@@ -4,7 +4,9 @@
 // @description  Redirige les 410 vers jvarchive.com
 // @version      0.1
 // @grant        none
-// @include		/^(http|https):\/\/www\.jeuxvideo\.com\/forums\/(.*)$/
+// @include	 ^(http|https):\/\/www\.jeuxvideo\.com\/forums\/(.*)$/
+// @downloadURL  https://github.com/jvscript/userscripts/raw/main/archv.user.js
+// @updateURL    https://github.com/jvscript/userscripts/raw/main/archv.user.js
 // ==/UserScript==
 
 
