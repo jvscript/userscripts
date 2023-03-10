@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         archv.js
+// @name         JvArchive
 // @author       unknown
 // @description  Redirige les 410 vers jvarchive.com
 // @version      0.1
