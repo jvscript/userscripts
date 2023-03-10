@@ -2,7 +2,7 @@
 // @name         JvArchive
 // @author       unknown
 // @description  Redirige les 410 vers jvarchive.com
-// @version      0.1
+// @version      0.2
 // @grant        none
 // @include	 ^(http|https):\/\/www\.jeuxvideo\.com\/forums\/(.*)$/
 // @downloadURL  https://github.com/jvscript/userscripts/raw/main/archv.user.js
