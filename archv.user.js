@@ -2,6 +2,7 @@
 // @name         410 Redirect
 // @author       unknown
 // @description  Redirige les 410 vers jvarchive.com
+// @icon         https://jvarchive.com/favicon-32x32.png
 // @version      0.2
 // @grant        none
 // @run-at       document-body
