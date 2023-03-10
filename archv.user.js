@@ -1,5 +1,7 @@
 // ==UserScript==
 // @name         archv.js
+// @author       unknown
+// @description  Redirige les 410 vers jvarchive.com
 // @version      0.1
 // @grant        none
 // @include		/^(http|https):\/\/www\.jeuxvideo\.com\/forums\/(.*)$/
