@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         JvArchive
+// @name         410 Redirect
 // @author       unknown
 // @description  Redirige les 410 vers jvarchive.com
 // @version      0.2
