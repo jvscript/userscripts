@@ -15,59 +15,95 @@
 
 (function() {
     'use strict';
+
     const textArea = document.querySelector('#message_topic');
 
-    textArea.addEventListener('drop', async (event) => {
+    textArea.addEventListener('drop', handleDrop);
+    textArea.addEventListener('paste', handlePaste);
+
+    async function handleDrop(event) {
         const dataTransfer = event.dataTransfer;
         if (dataTransfer.types && Array.from(dataTransfer.types).includes('Files')) {
             event.preventDefault();
             event.stopPropagation();
-            const files = event.dataTransfer.files;
-            handleFile(files);
+            const files = dataTransfer.files;
+            await uploadFiles(files);
         }
+    }
 
-    });
-
-    textArea.addEventListener('paste', async (event) => {       
+    async function handlePaste(event) {
         const clipboardData = event.clipboardData;
         if (clipboardData.types.includes('Files')) {
             event.preventDefault();
             const files = clipboardData.files;
-            handleFile(files);
+            await uploadFiles(files);
         }
-    });
+    }
 
-    // Upload image file and set the image link in text area
-    async function handleFile(files) {
-        for (const file of files) {
+    async function uploadFiles(files) {
+        for (let i = 0; i < files.length; i++) {
+            let file = files[i];
             if (file.type.includes("image")) {
-                const formData = new FormData();
-                formData.append('publication', '0');
-                formData.append('domain', 'https://www.jeuxvideo.com');
-                formData.append('fichier', file);
-
-                const response = await sendRequest(formData);
-                try {
-                    const data = JSON.parse(response.responseText);
-                    let imageUrl = data.url;
-                    if(imageUrl) {
-                        imageUrl = " " + imageUrl + " "
-                        const position = textArea.selectionStart;
-                        const before = textArea.value.substring(0, position);
-                        const after = textArea.value.substring(position, textArea.value.length);
-                        textArea.value = before + imageUrl + after;
-                        textArea.selectionStart = textArea.selectionEnd = position + imageUrl.length;
-                    }
+                if (file.type === "image/webp") {
+                    file = await convertWebPToJPEG(file);
                 }
-                catch (error) {
-                    console.error("Error parsing JSON:", error);
+                const imageUrl = await uploadFile(file);
+                if (imageUrl) {
+                    updateTextArea(imageUrl);
+                }
+                await new Promise(resolve => setTimeout(resolve, 200));
+                if (i >= 1) {
+                    await new Promise(resolve => setTimeout(resolve, 2000));
                 }
             }
         }
-
     }
 
-    // Function to send XHR requests
+    async function uploadFile(file) {
+        const formData = new FormData();
+        formData.append('publication', '0');
+        formData.append('domain', 'https://www.jeuxvideo.com');
+        formData.append('fichier', file);
+
+        const response = await sendRequest(formData);
+
+        try {
+            const data = JSON.parse(response.responseText);
+            return data.url || null;
+        } catch (error) {
+            console.error("Error parsing JSON:", error);
+            return null;
+        }
+    }
+
+    function updateTextArea(imageUrl) {
+        imageUrl = " " + imageUrl + " ";
+        const position = textArea.selectionStart;
+        const before = textArea.value.substring(0, position);
+        const after = textArea.value.substring(position, textArea.value.length);
+        textArea.value = before + imageUrl + after;
+        textArea.selectionStart = textArea.selectionEnd = position + imageUrl.length;
+    }
+
+    async function convertWebPToJPEG(webpBlob) {
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(webpBlob);
+
+        return new Promise((resolve) => {
+            img.onload = function () {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = img.width;
+                canvas.height = img.height;
+
+                ctx.drawImage(img, 0, 0, img.width, img.height);
+                canvas.toBlob((blob) => {
+                    resolve(blob);
+                }, 'image/jpeg');
+            };
+        });
+    }
+
     function sendRequest(formData) {
         return new Promise((resolve, reject) => {
             GM_xmlhttpRequest({
@@ -75,8 +111,6 @@
                 url: 'https://www.noelshack.com/webservice/envoi.json',
                 data: formData,
                 onload: function(response) {
-                    var responseXML = null;
-                    // console.log(response);
                     resolve(response);
                 },
                 onerror: function(error) {
