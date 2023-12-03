@@ -1,6 +1,5 @@
 // ==UserScript==
 // @name         BetterNoelshack
-// @namespace    http://tampermonkey.net/
 // @version      0.1
 // @description  Drag n drop ou copier coller d'image vers noelshack sur les forums JVC 
 // @author       cogis
