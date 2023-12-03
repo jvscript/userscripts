@@ -83,6 +83,8 @@
         const after = textArea.value.substring(position, textArea.value.length);
         textArea.value = before + imageUrl + after;
         textArea.selectionStart = textArea.selectionEnd = position + imageUrl.length;
+        const changeEvent = new Event('change', { bubbles: true });
+        textArea.dispatchEvent(changeEvent);
     }
 
     async function convertWebPToJPEG(webpBlob) {
