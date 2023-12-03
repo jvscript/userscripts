@@ -2,7 +2,7 @@
 // @name         BetterNoelshack
 // @namespace    http://tampermonkey.net/
 // @version      0.1
-// @description  BetterNoelshack
+// @description  Drag n drop ou copier coller d'image vers noelshack sur les forums JVC 
 // @author       cogis
 // @match        *://*.jeuxvideo.com/forums*
 // @run-at       document-end
