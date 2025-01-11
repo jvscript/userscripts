@@ -2,7 +2,7 @@
 // @name         410 Redirect
 // @author       unknown
 // @description  Redirige les 410 vers jeuxvideo.to
-// @icon         https://jeuxvideo.to/favicon-32x32.png
+// @icon         https://jvarchive.st/favicon-32x32.png
 // @version      0.6
 // @grant        none
 // @run-at       document-body
